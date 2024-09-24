@@ -125,3 +125,399 @@ section.dashboard h2 {
         width: 100%;
     }
 }
+
+/* General Styling for Create Session */
+.create-session {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.create-session h2 {
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+/* Form Styling */
+.session-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.session-form h3 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.session-form label {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.session-form input[type="date"],
+.session-form input[type="time"],
+.session-form select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.session-form button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.session-form button:hover {
+    background-color: #0056b3;
+}
+
+/* Session List Styling */
+.session-list {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.session-list h3 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Table Styling */
+.session-list table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.session-list table th,
+.session-list table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.session-list table th {
+    background-color: #007bff;
+    color: white;
+}
+
+.session-list table td {
+    color: #333;
+}
+
+.session-list table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* QR Code Styling */
+.qr-code {
+    width: 50px;
+    height: 50px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .create-session {
+        margin: 10px;
+    }
+
+    .session-form,
+    .session-list {
+        padding: 15px;
+    }
+
+    .session-form input[type="date"],
+    .session-form input[type="time"],
+    .session-form select {
+        font-size: 14px;
+    }
+
+    .session-list table th,
+    .session-list table td {
+        padding: 10px;
+    }
+}
+
+/* General styling for the manage courses section */
+.manage-courses {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.manage-courses h2 {
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+/* Add Course Form Styling */
+.add-course {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.add-course h3 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.add-course label {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.add-course input[type="text"], .add-course textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.add-course button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.add-course button:hover {
+    background-color: #0056b3;
+}
+
+/* Course List Styling */
+.course-list {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.course-list h3 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Table styling */
+.course-list table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.course-list table th, .course-list table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.course-list table th {
+    background-color: #007bff;
+    color: white;
+}
+
+.course-list table td {
+    color: #333;
+}
+
+.course-list table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Action buttons (Edit, Delete) */
+.course-list .edit-btn, .course-list .delete-btn {
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    color: white;
+    font-size: 14px;
+    margin-right: 5px;
+}
+
+.course-list .edit-btn {
+    background-color: #28a745;
+}
+
+.course-list .edit-btn:hover {
+    background-color: #218838;
+}
+
+.course-list .delete-btn {
+    background-color: #dc3545;
+}
+
+.course-list .delete-btn:hover {
+    background-color: #c82333;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .manage-courses {
+        margin: 10px;
+    }
+
+    .add-course, .course-list {
+        padding: 15px;
+    }
+
+    .add-course input[type="text"], .add-course textarea {
+        font-size: 14px;
+    }
+
+    .course-list table th, .course-list table td {
+        padding: 10px;
+    }
+
+    .course-list .edit-btn, .course-list .delete-btn {
+        font-size: 12px;
+    }
+}
+
+/* General Styling for report.php */
+.attendance-reports {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.attendance-reports h2 {
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+/* Filter Form Styling */
+.filter-reports {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.filter-reports h3 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.filter-reports label {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.filter-reports select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.filter-reports button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.filter-reports button:hover {
+    background-color: #0056b3;
+}
+
+/* Report Table Styling */
+.report-results {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.report-results h3 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.report-results table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.report-results table th,
+.report-results table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.report-results table th {
+    background-color: #007bff;
+    color: white;
+}
+
+.report-results table td {
+    color: #333;
+}
+
+.report-results table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Export Button Styling */
+.export-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.export-btn:hover {
+    background-color: #218838;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .attendance-reports {
+        margin: 10px;
+    }
+
+    .filter-reports,
+    .report-results {
+        padding: 15px;
+    }
+
+    .filter-reports select {
+        font-size: 14px;
+    }
+
+    .report-results table th,
+    .report-results table td {
+        padding: 10px;
+    }
+}

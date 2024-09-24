@@ -1,5 +1,5 @@
 <head>  
-    <link rel="stylesheet" href="asset/css/manage-courses.css">
+    <link rel="stylesheet" href="asset/css/teacher-styles.css">
 </head>
 
 <div class="manage-courses">

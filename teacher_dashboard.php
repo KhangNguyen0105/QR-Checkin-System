@@ -14,10 +14,19 @@
             <h2>Teacher Panel</h2>
         </div>
         <ul>
-            <!-- <li><a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a></li> -->
-            <li><a href="?page=manage-courses" class="active"><i class="fas fa-book"></i> Manage Courses</a></li>
-            <li><a href="?page=create-session"><i class="fas fa-calendar-alt"></i> Create Session</a></li>
-            <li><a href="?page=reports"><i class="fas fa-chart-bar"></i> Attendance Reports</a></li>
+        <?php
+            // Get the current page from the URL parameter '?page'
+            $page = isset($_GET['page']) ? $_GET['page'] : 'manage-courses'; // Default to 'manage-courses'
+
+            // Helper function to add 'active' class if it's the current page
+            function isActive($current_page, $page) {
+                return $current_page === $page ? 'class="active"' : '';
+            }
+            ?>
+
+            <li><a href="?page=manage-courses" <?= isActive($page, 'manage-courses'); ?>><i class="fas fa-book"></i> Manage Courses</a></li>
+            <li><a href="?page=create-session" <?= isActive($page, 'create-session'); ?>><i class="fas fa-calendar-alt"></i> Create Session</a></li>
+            <li><a href="?page=reports" <?= isActive($page, 'reports'); ?>><i class="fas fa-chart-bar"></i> Attendance Reports</a></li>
             <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </div>
@@ -31,7 +40,7 @@
         <!-- Additional sections (e.g. Manage Courses, Create Sessions, Reports) go here -->
         <?php
             // Use the query parameter 'page' to determine what content to load
-            $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
+            $page = isset($_GET['page']) ? $_GET['page'] : 'manage-courses';
 
             // Include the requested page
             switch ($page) {
@@ -41,8 +50,6 @@
                 case 'create-session':
                     include 'create-session.php';
                     break;
-
-                    
                 case 'reports':
                     include 'reports.php';
                     break;
