@@ -1,0 +1,141 @@
+/* General styling for the manage courses section */
+.manage-courses {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.manage-courses h2 {
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+/* Add Course Form Styling */
+.add-course {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.add-course h3 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.add-course label {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.add-course input[type="text"], .add-course textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.add-course button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.add-course button:hover {
+    background-color: #0056b3;
+}
+
+/* Course List Styling */
+.course-list {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.course-list h3 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Table styling */
+.course-list table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.course-list table th, .course-list table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.course-list table th {
+    background-color: #007bff;
+    color: white;
+}
+
+.course-list table td {
+    color: #333;
+}
+
+.course-list table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Action buttons (Edit, Delete) */
+.course-list .edit-btn, .course-list .delete-btn {
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    color: white;
+    font-size: 14px;
+    margin-right: 5px;
+}
+
+.course-list .edit-btn {
+    background-color: #28a745;
+}
+
+.course-list .edit-btn:hover {
+    background-color: #218838;
+}
+
+.course-list .delete-btn {
+    background-color: #dc3545;
+}
+
+.course-list .delete-btn:hover {
+    background-color: #c82333;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .manage-courses {
+        margin: 10px;
+    }
+
+    .add-course, .course-list {
+        padding: 15px;
+    }
+
+    .add-course input[type="text"], .add-course textarea {
+        font-size: 14px;
+    }
+
+    .course-list table th, .course-list table td {
+        padding: 10px;
+    }
+
+    .course-list .edit-btn, .course-list .delete-btn {
+        font-size: 12px;
+    }
+}

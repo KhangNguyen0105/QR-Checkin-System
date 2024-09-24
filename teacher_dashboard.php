@@ -15,10 +15,10 @@
         </div>
         <ul>
             <!-- <li><a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a></li> -->
-            <li><a href="#" class="active"><i class="fas fa-book"></i> Manage Courses</a></li>
-            <li><a href="#"><i class="fas fa-calendar-alt"></i> Create Session</a></li>
-            <li><a href="#"><i class="fas fa-chart-bar"></i> Attendance Reports</a></li>
-            <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            <li><a href="?page=manage-courses" class="active"><i class="fas fa-book"></i> Manage Courses</a></li>
+            <li><a href="?page=create-session"><i class="fas fa-calendar-alt"></i> Create Session</a></li>
+            <li><a href="?page=reports"><i class="fas fa-chart-bar"></i> Attendance Reports</a></li>
+            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </div>
 
@@ -36,7 +36,7 @@
             // Include the requested page
             switch ($page) {
                 case 'manage-courses':
-                    include 'manage-courses.html';
+                    include 'manage-courses.php';
                     break;
                 case 'create-session':
                     include 'create-session.php';
@@ -46,8 +46,6 @@
                 case 'reports':
                     include 'reports.php';
                     break;
-                default:
-                    include 'dashboard.php';
             }
         ?>
 

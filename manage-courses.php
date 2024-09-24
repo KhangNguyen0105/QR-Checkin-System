@@ -1,3 +1,7 @@
+<head>  
+    <link rel="stylesheet" href="asset/css/manage-courses.css">
+</head>
+
 <div class="manage-courses">
     <h2>Manage Courses</h2>
     
