@@ -14,37 +14,36 @@
             <h2>Student Panel</h2>
         </div>
         <ul>
-            <li><a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
-            <li><a href="#"><i class="fas fa-qrcode"></i> Scan QR Code</a></li>
-            <li><a href="#"><i class="fas fa-list"></i> Attendance History</a></li>
-            <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            <li><a href="#" class="active"><i class="fas fa-home"></i> Tổng quan</a></li>
+            <li><a href="#"><i class="fas fa-qrcode"></i> Quét mã QR</a></li>
+            <li><a href="#"><i class="fas fa-list"></i> Lịch sử điểm danh</a></li>
+            <li><a href="#"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
         </ul>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
         <header>
-            <h1>Welcome, Student</h1>
+            <img src="asset/img/logoQuyNhon.png" alt="Banner" style="width: 100%; height: auto;">
         </header>
 
         <!-- Scan QR Code Section -->
         <section class="qr-scan">
-            <h2>Scan QR Code for Attendance</h2>
+            <h2>Quét mã QR để điểm danh</h2>
             <div class="qr-scanner">
                 <video id="preview" width="300" height="300"></video>
-                <p>Scan the QR code to check-in for today's session.</p>
             </div>
         </section>
 
         <!-- Attendance History Section -->
         <section class="attendance-history">
-            <h2>Your Attendance History</h2>
+            <h2>Lịch sử điểm danh</h2>
             <table>
                 <thead>
                     <tr>
-                        <th>Course</th>
-                        <th>Date</th>
-                        <th>Status</th>
+                        <th>Lớp</th>
+                        <th>Thời gian</th>
+                        <th>Trạng thái</th>
                     </tr>
                 </thead>
                 <tbody>
