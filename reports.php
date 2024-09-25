@@ -51,7 +51,7 @@
         </table>
 
         <!-- Export to Excel Button -->
-        <button id="export-excel" style="margin-top: 20px;" onclick="exportTableToExcel('report-table', 'attendance_report')">Export to Excel</button>
+        <button id="export-excel" class="export-btn" style="margin-top: 20px;" onclick="exportTableToExcel('report-table', 'attendance_report')">Export to Excel</button>
     </div>
 </div>
 
