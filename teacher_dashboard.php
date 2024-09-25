@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher Dashboard</title>
+    <title>Teacher Name Here</title>
     <link rel="stylesheet" href="asset/css/teacher-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -11,7 +11,7 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="logo">
-            <h2>Teacher Panel</h2>
+            <h2>Teacher Name here</h2>
         </div>
         <ul>
         <?php
@@ -24,17 +24,17 @@
             }
             ?>
 
-            <li><a href="?page=manage-courses" <?= isActive($page, 'manage-courses'); ?>><i class="fas fa-book"></i> Manage Courses</a></li>
-            <li><a href="?page=create-session" <?= isActive($page, 'create-session'); ?>><i class="fas fa-calendar-alt"></i> Create Session</a></li>
-            <li><a href="?page=reports" <?= isActive($page, 'reports'); ?>><i class="fas fa-chart-bar"></i> Attendance Reports</a></li>
-            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            <li><a href="?page=manage-courses" <?= isActive($page, 'manage-courses'); ?>><i class="fas fa-book"></i> Quản lý lớp học</a></li>
+            <li><a href="?page=create-session" <?= isActive($page, 'create-session'); ?>><i class="fas fa-calendar-alt"></i> Tạo buổi học</a></li>
+            <li><a href="?page=reports" <?= isActive($page, 'reports'); ?>><i class="fas fa-chart-bar"></i> Báo cáo điểm danh</a></li>
+            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
         </ul>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
         <header>
-            <h1>Welcome, Teacher</h1>
+            <img src="asset/img/logoQuyNhon.png" alt="Banner" style="width: 100%; height: auto;">
         </header>
 
         <!-- Additional sections (e.g. Manage Courses, Create Sessions, Reports) go here -->

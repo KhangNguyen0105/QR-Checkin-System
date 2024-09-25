@@ -3,31 +3,31 @@
 </head>
 
 <div class="manage-courses">
-    <h2>Manage Courses</h2>
+    <h2>Quản lý lớp học</h2>
     
     <!-- Form to Add New Course -->
     <div class="add-course">
-        <h3>Add New Course</h3>
+        <h3>Tạo lớp học mới</h3>
         <form action="add_course.php" method="POST">
-            <label for="course-name">Course Name:</label>
+            <label for="course-name">Tên lớp:</label>
             <input type="text" id="course-name" name="course_name" required>
 
-            <label for="course-description">Course Description:</label>
+            <label for="course-description">Mô tả:</label>
             <textarea id="course-description" name="course_description" rows="4" required></textarea>
 
-            <button type="submit">Add Course</button>
+            <button type="submit">Tạo lớp học mới</button>
         </form>
     </div>
 
     <!-- List of Existing Courses -->
     <div class="existing-courses">
-        <h3>Existing Courses</h3>
+        <h3>Lớp học của bạn</h3>
         <table class="course-table">
         <thead>
             <tr>
-                <th>Course ID</th>
-                <th>Course Name</th>
-                <th>Actions</th>
+                <th>Mã lớp</th>
+                <th>Tên lớp</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -36,27 +36,27 @@
                 <td>1</td>
                 <td>Introduction to Programming</td>
                 <td>
-                    <a href="view_course.php?course_id=1" class="action-btn view-btn">View Students</a>
-                    <a href="#" class="action-btn edit-btn" data-course-id="1" data-course-name="Introduction to Programming" data-course-desc="Learn the basics of programming in this introductory course.">Edit</a>
-                    <a href="delete_course.php?course_id=1" class="action-btn delete-btn" onclick="return confirm('Are you sure you want to delete this course?');">Delete</a>
+                    <a href="view_course.php?course_id=1" class="action-btn view-btn">Xem danh sách học sinh</a>
+                    <a href="#" class="action-btn edit-btn" data-course-id="1" data-course-name="Introduction to Programming" data-course-desc="Learn the basics of programming in this introductory course.">Chỉnh sửa thông tin lớp học</a>
+                    <a href="delete_course.php?course_id=1" class="action-btn delete-btn" onclick="return confirm('Are you sure you want to delete this course?');">Xoá lớp học</a>
                 </td>
             </tr>
             <tr>
                 <td>2</td>
                 <td>Web Development Basics</td>
                 <td>
-                    <a href="view_course.php?course_id=2" class="action-btn view-btn">View Students</a>
-                    <a href="#" class="action-btn edit-btn" data-course-id="2" data-course-name="Web Development Basics" data-course-desc="Fundamentals of HTML, CSS, and JavaScript for web development.">Edit</a>
-                    <a href="delete_course.php?course_id=2" class="action-btn delete-btn" onclick="return confirm('Are you sure you want to delete this course?');">Delete</a>
+                    <a href="view_course.php?course_id=2" class="action-btn view-btn">Xem danh sách học sinh</a>
+                    <a href="#" class="action-btn edit-btn" data-course-id="2" data-course-name="Web Development Basics" data-course-desc="Fundamentals of HTML, CSS, and JavaScript for web development.">Chỉnh sửa thông tin lớp học</a>
+                    <a href="delete_course.php?course_id=2" class="action-btn delete-btn" onclick="return confirm('Are you sure you want to delete this course?');">Xoá lớp học</a>
                 </td>
             </tr>
             <tr>
                 <td>3</td>
                 <td>Database Management Systems</td>
                 <td>
-                    <a href="view_course.php?course_id=3" class="action-btn view-btn">View Students</a>
-                    <a href="#" class="action-btn edit-btn" data-course-id="3" data-course-name="Database Management Systems" data-course-desc="Learn relational database concepts and SQL queries.">Edit</a>
-                    <a href="delete_course.php?course_id=3" class="action-btn delete-btn" onclick="return confirm('Are you sure you want to delete this course?');">Delete</a>
+                    <a href="view_course.php?course_id=3" class="action-btn view-btn">Xem danh sách học sinh</a>
+                    <a href="#" class="action-btn edit-btn" data-course-id="3" data-course-name="Database Management Systems" data-course-desc="Learn relational database concepts and SQL queries.">Chỉnh sửa thông tin lớp học</a>
+                    <a href="delete_course.php?course_id=3" class="action-btn delete-btn" onclick="return confirm('Are you sure you want to delete this course?');">Xoá lớp học</a>
                 </td>
             </tr>
 
@@ -67,17 +67,17 @@
     <div id="editModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>Edit Course</h2>
+            <h2>Chỉnh sửa lớp học</h2>
             <form id="editCourseForm" action="edit_course.php" method="post">
                 <input type="hidden" name="course_id" id="course_id">
 
-                <label for="course_name">Course Name</label>
+                <label for="course_name">Tên lớp học</label>
                 <input type="text" name="course_name" id="course_name" required>
 
-                <label for="course_desc">Course Description</label>
+                <label for="course_desc">Mô tả</label>
                 <textarea name="course_desc" id="course_desc" rows="4" required></textarea>
 
-                <button type="submit">Save Changes</button>
+                <button type="submit">Lưu</button>
             </form>
         </div>
     </div>
