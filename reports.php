@@ -1,106 +1,231 @@
+<?php
+require 'config.php';
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: index.php");
+    exit;
+}
+
+$teacher_id = $_SESSION['user_id'];
+
+$courses_sql = 'SELECT id, course_name FROM courses WHERE teacher_id = :teacher_id';
+$courses_stmt = $pdo->prepare($courses_sql);
+$courses_stmt->execute(['teacher_id' => $teacher_id]);
+$courses = $courses_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+?>
+<!DOCTYPE html>
+<html>
 <head>
     <link rel="stylesheet" href="asset/css/teacher-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+    <style>
+        /* CSS cho phần Chọn khoảng thời gian */
+        .filter-reports {
+            margin-bottom: 20px;
+        }
+        .filter-reports div {
+            margin-bottom: 10px;
+        }
+        #date-range {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
-
+<body>
 <div class="attendance-reports">
-    <h2>Attendance Reports</h2>
-
-    <!-- Filter Form for Attendance Reports -->
-<div class="filter-reports">
-    <h3>Filter Reports</h3>
-    <form id="attendanceForm" action="reports.php" method="GET">
-        <label for="course-select">Select Course:</label>
-        <select id="course-select" name="course_id" required>
-            <option value="" disabled selected>Select a course</option>
-            <!-- Dynamically populate course options -->
-        </select>
-
-        <label for="time-period">Time Period:</label>
-        <select id="time-period" name="time_period" required onchange="handleTimePeriodChange()">
-            <option value="" disabled selected>Select time period</option>
-            <option value="daily">Daily</option>
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Monthly</option>
-        </select>
-
-        <!-- Dynamic session dropdown for 'daily' period -->
-        <div id="session-select-container" style="display:none;">
-            <label for="session-select">Select Session:</label>
-            <select id="session-select" name="session_id">
-                <option value="" disabled selected>Select a session</option>
-                <!-- Sessions will be dynamically populated here -->
-            </select>
-        </div>
-
-        <button type="submit">View Report</button>
-    </form>
-</div>
-
-    <!-- Report Details Section -->
+    <h2>Báo cáo điểm danh</h2>
+    <div class="filter-reports">
+        <form id="attendanceForm">
+            <div>
+                <label for="course-select">Chọn lớp:</label>
+                <select id="course-select" required>
+                    <option value="" disabled selected>Chọn lớp học</option>
+                    <?php foreach ($courses as $course): ?>
+                        <option value="<?= $course['id'] ?>"><?= htmlspecialchars($course['course_name']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div>
+                <label for="time-period">Chọn chu kỳ:</label>
+                <select id="time-period" required>
+                    <option value="" selected disabled>Chọn loại báo cáo</option>
+                    <option value="by_session">Theo buổi học</option>
+                    <option value="by_date">Theo khoảng thời gian</option>
+                </select>
+            </div>
+            <div id="session-select-container" style="display:none;">
+                <label for="session-select">Chọn buổi học:</label>
+                <select id="session-select" required>
+                    <option value="" disabled selected>Chọn buổi học</option>
+                </select>
+            </div>
+            <div id="date-range-container" style="display:none;">
+                <label for="date-range">Chọn khoảng thời gian:</label>
+                <input type="text" id="date-range" placeholder="Chọn khoảng thời gian" required>
+            </div>
+            <button type="button" onclick="loadReport()">Xem báo cáo</button>
+        </form>
+    </div>
     <div class="report-results">
-        <h3>Report Details</h3>
-
-        <!-- Dynamic table based on selected time period -->
+        <h3>Chi tiết điểm danh</h3>
         <table id="report-table">
-            <thead id="report-table-head">
-                <!-- Headers will be dynamically populated based on selected time period -->
+            <thead>
+                <tr>
+                    <th>Tên sinh viên</th>
+                    <th>Ngày học</th>
+                    <th>Trạng thái</th>
+                    <th>Thời gian điểm danh</th>
+                </tr>
             </thead>
-            <tbody id="report-table-body">
-                <!-- Report data will be populated here -->
-            </tbody>
+            <tbody></tbody>
         </table>
-
-        <!-- Export to Excel Button -->
-        <button id="export-excel" class="export-btn" style="margin-top: 20px;" onclick="exportTableToExcel('report-table', 'attendance_report')">Export to Excel</button>
     </div>
 </div>
 
 <script>
-    // Handle changes to the time period selection
-    function handleTimePeriodChange() {
-        const timePeriod = document.getElementById("time-period").value;
-        const sessionSelectContainer = document.getElementById("session-select-container");
-
-        // Show session dropdown if daily is selected, otherwise hide it
-        if (timePeriod === "daily") {
-            sessionSelectContainer.style.display = "block";
-            // Fetch available sessions for the selected course via AJAX (for demo, it's a placeholder)
-            fetchSessionsForCourse();
-        } else {
-            sessionSelectContainer.style.display = "none";
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('time-period').addEventListener('change', function () {
+        const timePeriod = this.value;
+        if (timePeriod === 'by_session') {
+            document.getElementById('session-select-container').style.display = 'block';
+            document.getElementById('date-range-container').style.display = 'none';
+            loadSessions(document.getElementById('course-select').value);
+        } else if (timePeriod === 'by_date') {
+            document.getElementById('session-select-container').style.display = 'none';
+            document.getElementById('date-range-container').style.display = 'block';
+            flatpickr('#date-range', {
+                mode: 'range',
+                dateFormat: 'Y-m-d'
+            });
         }
+    });
+
+    document.getElementById('course-select').addEventListener('change', function () {
+        if (document.getElementById('time-period').value === 'by_session') {
+            loadSessions(this.value);
+        }
+    });
+});
+
+function loadSessions(courseId) {
+    fetch(`?load_sessions=1&course_id=${courseId}`)
+        .then(response => response.json())
+        .then(data => {
+            const sessionSelect = document.getElementById('session-select');
+            sessionSelect.innerHTML = '<option value="" disabled selected>Chọn buổi học</option>';
+            data.forEach(session => {
+                const option = document.createElement('option');
+                option.value = session.id;
+                option.textContent = session.session_date;
+                sessionSelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function loadReport() {
+    const courseSelect = document.getElementById('course-select');
+    const timePeriod = document.getElementById('time-period').value;
+    const reportType = timePeriod === 'by_session' ? 'by_session' : 'by_date';
+    let periodValue;
+
+    if (reportType === 'by_session') {
+        periodValue = document.getElementById('session-select').value;
+    } else if (reportType === 'by_date') {
+        const dateRange = document.getElementById('date-range').value.split(' to ');
+        periodValue = {
+            start_date: dateRange[0],
+            end_date: dateRange[1]
+        };
     }
 
-    // Placeholder function to simulate fetching sessions from the server
-    function fetchSessionsForCourse() {
-        const courseId = document.getElementById("course-select").value;
-
-        // Example: Use AJAX to fetch session data for the selected course
-        // For now, we'll manually populate sessions for demo purposes
-        const sessionSelect = document.getElementById("session-select");
-        sessionSelect.innerHTML = `
-            <option value="1">2024-09-24: 09:00 - 10:00</option>
-            <option value="2">2024-09-25: 11:00 - 12:00</option>
-        `;
-    }
-
-    // Function to export the report table to Excel
-    function exportTableToExcel(tableID, filename = '') {
-        const downloadLink = document.createElement('a');
-        const dataType = 'application/vnd.ms-excel';
-        const tableSelect = document.getElementById(tableID);
-        const tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
-
-        // Specify file name
-        filename = filename ? filename + '.xls' : 'excel_data.xls';
-
-        // Create download link element
-        downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
-        downloadLink.download = filename;
-
-        // Trigger download
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-    }
+    fetch('?fetch_report=1', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            course_id: courseSelect.value,
+            time_period: periodValue,
+            report_type: reportType
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        const tbody = document.querySelector('#report-table tbody');
+        tbody.innerHTML = '';
+        data.forEach(record => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${record.full_name}</td>
+                <td>${record.session_date}</td>
+                <td>${record.status}</td>
+                <td>${record.check_in_time}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    })
+    .catch(error => console.error('Error:', error));
+}
 </script>
+
+<?php
+if (isset($_GET['load_sessions'])) {
+    $course_id = $_GET['course_id'];
+    $sessions_sql = 'SELECT id, session_date FROM sessions WHERE course_id = :course_id';
+    $sessions_stmt = $pdo->prepare($sessions_sql);
+    $sessions_stmt->execute(['course_id' => $course_id]);
+    $sessions = $sessions_stmt->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($sessions);
+    exit;
+}
+
+if (isset($_GET['fetch_report'])) {
+    $data = json_decode(file_get_contents("php://input"), true);
+    $course_id = $data['course_id'];
+    $time_period = $data['time_period'];
+    $report_type = $data['report_type'];
+
+    $sql = 'SELECT u.full_name, s.session_date, a.status, a.check_in_time 
+            FROM attendance a
+            JOIN users u ON a.student_id = u.id
+            JOIN sessions s ON a.session_id = s.id
+            WHERE s.course_id = :course_id';
+
+    $params = ['course_id' => $course_id];
+
+    if ($report_type == 'by_session') {
+        $sql .= ' AND a.session_id = :session_id';
+        $params['session_id'] = $time_period;
+    } else if ($report_type == 'by_date') {
+        $sql .= ' AND s.session_date BETWEEN :start_date AND :end_date';
+        $params['start_date'] = $time_period['start_date'];
+        $params['end_date'] = $time_period['end_date'];
+    }
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    $attendance = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($attendance);
+    exit;
+}
+?>
+
+</body>
+</html>

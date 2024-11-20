@@ -1,3 +1,51 @@
+<?php
+    require 'config.php';
+
+    // Handle form submission
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        $course_name = $_POST['course_name'];
+        $course_description = $_POST['course_description'];
+        $teacher_id = $_SESSION['user_id'];
+
+        // Prepare the SQL statement
+        $sql = "INSERT INTO courses (course_name, descriptions, teacher_id, created_at) VALUES (:course_name, :course_description, :teacher_id, NOW())";
+        
+        try {
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                'course_name' => $course_name,
+                'course_description' => $course_description,
+                'teacher_id' => $teacher_id
+            ]);
+
+            // Redirect to the course management page after successful creation
+            echo 
+                "<script>
+                    alert('Lớp học đã được tạo thành công!');
+                    window.location.href = 'teacher_dashboard.php';
+                </script>";
+            exit;
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+    // Initialize an empty array for courses
+    $courses = [];
+    // Fetch existing courses for the current teacher
+    try {
+        $teacher_id = $_SESSION['user_id'];
+        $sql = "SELECT id, course_name FROM courses WHERE teacher_id = :teacher_id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['teacher_id' => $teacher_id]);
+        $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        echo "Error fetching courses: " . $e->getMessage();
+    }
+?>
+
+
+
 <head>  
     <link rel="stylesheet" href="asset/css/teacher-styles.css">
 </head>
@@ -8,12 +56,12 @@
     <!-- Form to Add New Course -->
     <div class="add-course">
         <h3>Tạo lớp học mới</h3>
-        <form action="add_course.php" method="POST">
+        <form action="#" method="POST">
             <label for="course-name">Tên lớp:</label>
             <input type="text" id="course-name" name="course_name" required>
 
             <label for="course-description">Mô tả:</label>
-            <textarea id="course-description" name="course_description" rows="4" required></textarea>
+            <textarea id="course-description" name="course_description" rows="4"></textarea>
 
             <button type="submit">Tạo lớp học mới</button>
         </form>
@@ -23,45 +71,27 @@
     <div class="existing-courses">
         <h3>Lớp học của bạn</h3>
         <table class="course-table">
-        <thead>
-            <tr>
-                <th>Mã lớp</th>
-                <th>Tên lớp</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Manually added sample courses -->
-            <tr>
-                <td>1</td>
-                <td>Introduction to Programming</td>
-                <td>
-                    <a href="view_course.php?course_id=1" class="action-btn view-btn">Xem danh sách học sinh</a>
-                    <a href="#" class="action-btn edit-btn" data-course-id="1" data-course-name="Introduction to Programming" data-course-desc="Learn the basics of programming in this introductory course.">Chỉnh sửa thông tin lớp học</a>
-                    <a href="delete_course.php?course_id=1" class="action-btn delete-btn" onclick="return confirm('Are you sure you want to delete this course?');">Xoá lớp học</a>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Web Development Basics</td>
-                <td>
-                    <a href="view_course.php?course_id=2" class="action-btn view-btn">Xem danh sách học sinh</a>
-                    <a href="#" class="action-btn edit-btn" data-course-id="2" data-course-name="Web Development Basics" data-course-desc="Fundamentals of HTML, CSS, and JavaScript for web development.">Chỉnh sửa thông tin lớp học</a>
-                    <a href="delete_course.php?course_id=2" class="action-btn delete-btn" onclick="return confirm('Are you sure you want to delete this course?');">Xoá lớp học</a>
-                </td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Database Management Systems</td>
-                <td>
-                    <a href="view_course.php?course_id=3" class="action-btn view-btn">Xem danh sách học sinh</a>
-                    <a href="#" class="action-btn edit-btn" data-course-id="3" data-course-name="Database Management Systems" data-course-desc="Learn relational database concepts and SQL queries.">Chỉnh sửa thông tin lớp học</a>
-                    <a href="delete_course.php?course_id=3" class="action-btn delete-btn" onclick="return confirm('Are you sure you want to delete this course?');">Xoá lớp học</a>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
+            <thead>
+                <tr>
+                    <th>Mã lớp</th>
+                    <th>Tên lớp</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($courses as $course): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($course['id']); ?></td>
+                        <td><?php echo htmlspecialchars($course['course_name']); ?></td>
+                        <td>
+                            <a href="view_course.php?course_id=<?php echo htmlspecialchars($course['id']); ?>" class="action-btn view-btn">Xem danh sách học sinh</a>
+                            <a href="#" class="action-btn edit-btn" data-course-id="<?php echo htmlspecialchars($course['id']); ?>" data-course-name="<?php echo htmlspecialchars($course['course_name']); ?>" data-course-desc="Mô tả cho lớp học này.">Chỉnh sửa thông tin lớp học</a>
+                            <a href="delete_course.php?course_id=<?php echo htmlspecialchars($course['id']); ?>" class="action-btn delete-btn" onclick="return confirm('Bạn chắc chắn muốn xoá lớp học này?');">Xoá lớp học</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
 
     <!-- Edit Course Modal -->
     <div id="editModal" class="modal">

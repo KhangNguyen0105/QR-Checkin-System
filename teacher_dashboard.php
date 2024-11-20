@@ -1,9 +1,24 @@
+<?php
+    require 'config.php';
+    
+    session_start();
+
+    if (!isset($_SESSION['user_id'])) {
+        header("Location: index.php");
+        exit;
+    }
+
+    $teacher_id = $_SESSION['user_id'];
+    $teacher_name = $_SESSION['full_name'];
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher Name Here</title>
+    <title>Teacher Dashboard</title>
     <link rel="stylesheet" href="asset/css/teacher-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -11,7 +26,7 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="logo">
-            <h2>Teacher Name here</h2>
+            <h2> <?php echo $teacher_name; ?> </h2>
         </div>
         <ul>
         <?php

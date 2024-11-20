@@ -1,3 +1,39 @@
+<?php
+session_start();
+require 'config.php'; // File to handle database connection
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Get username and password from form
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // Prepare the SQL statement to prevent SQL injection
+    $sql = "SELECT * FROM users WHERE username = :username LIMIT 1";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user && password_verify($password, $user['password'])) {
+        // Password is correct, set session variables
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['role'] = $user['role'];
+        $_SESSION['full_name'] = $user['full_name'];
+
+        // Redirect based on role
+        if ($user['role'] === 'teacher') {
+            header("Location: teacher_dashboard.php");
+        } else {
+            header("Location: student_dashboard.php");
+        }
+        exit;
+    } else {
+        // Invalid login
+        $error = "Tên đăng nhập hoặc mật khẩu không đúng!";
+    }
+}
+?>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -5,154 +41,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập</title>
-    <!-- <link rel="stylesheet" href="css/login.css"> Thêm đường dẫn tới file CSS -->
-     <style>
-        * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.login-container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    text-align: center;
-}
-
-h2 {
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.form-group {
-    margin-bottom: 15px;
-    text-align: left;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-.form-group input, .form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-
-.error-message {
-    color: red;
-    margin-bottom: 15px;
-}
-
-.signup-link {
-    margin-top: 15px;
-}
-
-.signup-link a {
-    color: #007BFF;
-    text-decoration: none;
-}
-
-.signup-link a:hover {
-    text-decoration: underline;
-}
-
-.back-button {
-    margin-top: 10px;
-    display: block;
-    color: #007BFF;
-    text-decoration: none;
-}
-
-.back-button:hover {
-    text-decoration: underline;
-}
-.back-to-home {
-    margin-top: 20px;
-}
-
-.back-button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007BFF;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-}
-
-.back-button:hover {
-    background-color: #0056b3;
-    text-decoration: none;
-}
-
-     </style>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+        .login-container {
+            background-color: #fff;
+            padding: 2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            width: 280px; /* Adjusted width */
+            text-align: center;
+        }
+        .login-container img {
+            width: 200px;
+            margin-bottom: 1rem;
+        }
+        .login-container h2 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group input {
+            /* width: 100%; */
+            /* width: calc(100% - 2px); Adjusted to fit within container */
+            padding: 0.8rem;
+            margin-top: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .login-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #007bff;
+            color: white;
+            font-size: 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .login-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Đăng nhập</h2>
-        <form action="login.php" method="POST" id="loginForm">
-            <div class="form-group">
-                <label for="username">Tên Đăng Nhập</label>
-                <input type="text" id="username" name="taikhoan" required>
-            </div>
 
-            <div class="form-group">
-                <label for="Password">Mật khẩu</label>
-                <input type="password" id="Password" name="matkhau" required>
-            </div>
-
-            <div class="form-group">
-                <label for="role">Đăng nhập với tư cách:</label>
-                <select name="role" id="role" required>
-                    <option value="student">Sinh viên</option>
-                    <option value="teacher">Giảng viên</option>
-                </select>
-            </div>
-
-            <?php if (!empty($error)): ?>
-                <p class="error-message"><?php echo $error; ?></p>
-            <?php endif; ?>
-
-            <button type="submit" name="login">Đăng nhập</button>
-        </form>
-
-        <div class="signup-link">
-            <a href="./register.php">Bạn chưa có tài khoản?</a>
+<div class="login-container">
+    <img src="asset/img/qnu-logo.png" alt="Logo"> <!-- Replace 'path_to_logo.png' with the actual path to your logo -->
+    <h2>Điểm danh</h2>
+    <form action="#" method="POST"> <!-- Replace 'login_process.php' with the actual login processing file -->
+        <div class="form-group">
+            <input type="text" name="username" placeholder="Tên đăng nhập" required>
         </div>
-
-        <!-- Nút Quay lại trang chủ -->
-        <div class="back-to-home">
-            <a href="./index.php" class="back-button">Quay lại trang chủ</a>
+        <div class="form-group">
+            <input type="password" name="password" placeholder="Mật khẩu" required>
         </div>
-    </div>
+        <button type="submit" class="login-btn">Đăng nhập</button>
+    </form>
+</div>
+
 </body>
 </html>
